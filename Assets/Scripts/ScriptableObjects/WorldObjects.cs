@@ -7,4 +7,6 @@ public class WorldObjects : ScriptableObject
     public string objectName; 
     public GameObject prefab;
     public int price;
+    public Vector3 minScale;
+    public Vector3 maxScale;
 }
