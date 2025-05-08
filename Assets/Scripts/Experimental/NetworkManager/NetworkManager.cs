@@ -1,13 +1,20 @@
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 
 public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager Instance {get; private set;}
 
-    private WebsocketClient ws;
+    public float tickInterval = 5f; 
 
+    public event Action<ConnectionMessage> onOtherPlayerConnect;
+    public event Action<DisconnectionMessage> onOtherPlayerDisconnect;
+    public event Action<PlayerMoveMessage> onOtherPlayerMove;
+
+    private WebsocketClient ws;
     void Awake()
     {
         if (Instance != null && Instance != this){
@@ -21,14 +28,39 @@ public class NetworkManager : MonoBehaviour
     void Start()
     {
         ws = new WebsocketClient();
-        _ = ws.Connect("ws://localhost:8000/game/ws?user_id=123"); // underscore just means run in the background without awaiting it
-        ws.addRecievedCallback(onDataRecieved);
+        _ = ws.Connect($"ws://localhost:8000/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
+        ws.addRecievedCallback(OnDataRecieved);
         
     }
 
-    void onDataRecieved(Dictionary<string, object> data){
-        Debug.Log(data["type"]);
-        Debug.Log(DictToStr(data));
+    void OnDestroy()
+    {
+        _ = ws.Disconnect();
+    }
+
+    public void Broadcast(string json){
+        _ = ws.Broadcast(json);
+    }
+
+    void OnDataRecieved(Dictionary<string, object> dataJson, string dataStr){
+        string type = (string)dataJson["type"];
+        Debug.Log(type);
+
+        try{
+            switch(type){
+                case "playerConnect":
+                    onOtherPlayerConnect?.Invoke(JsonHelper.FromJson<ConnectionMessage>(dataStr));
+                    break;
+                case "playerDisconnect":
+                    onOtherPlayerDisconnect?.Invoke(JsonHelper.FromJson<DisconnectionMessage>(dataStr));
+                    break;
+                case "playerMove":
+                    onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
+                    break;
+            }
+        } catch (Exception e){
+            Debug.Log(e);
+        }
     }
 
     string DictToStr(Dictionary<string, object> dict){
