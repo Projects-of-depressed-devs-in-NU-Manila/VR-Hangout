@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Uses NetworkManager's events to listen and wait for movement of other players.
+// This script syncs the other players position. 
 public class MultiplayerMovementManager : MonoBehaviour
 {
     [SerializeField] private GameObject characterPrefab;
