@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerTransformSyncer : MonoBehaviour
 {
-    private float sendInterval = 1f / NetworkManager.Instance.tickInterval;
+    private float sendInterval = 1f / 10;
     private float sendTimer = 0;
 
     private Vector3 lastSentPosition; 
@@ -22,6 +22,7 @@ public class PlayerTransformSyncer : MonoBehaviour
                 };
 
                 NetworkManager.Instance.Broadcast(JsonHelper.ToJson(message));
+                lastSentPosition = transform.position;
             }
         }
     }

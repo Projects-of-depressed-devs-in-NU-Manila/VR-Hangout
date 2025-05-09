@@ -44,7 +44,6 @@ public class NetworkManager : MonoBehaviour
 
     void OnDataRecieved(Dictionary<string, object> dataJson, string dataStr){
         string type = (string)dataJson["type"];
-        Debug.Log(type);
 
         try{
             switch(type){

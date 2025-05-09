@@ -53,7 +53,6 @@ public class WebsocketClient{
 
         while (ws.State == WebSocketState.Open)
         {
-            Debug.Log("Reading");
             memoryStream.SetLength(0); // reset the stream
 
             WebSocketReceiveResult result;
@@ -75,6 +74,9 @@ public class WebsocketClient{
                 callback.Invoke(dataJson, dataStr);
             }
         }
+
+        Debug.LogError("Connection to server closed");
+        Application.Quit();
     }
 
     private Dictionary<string, object> StrToDict(string dataStr){
