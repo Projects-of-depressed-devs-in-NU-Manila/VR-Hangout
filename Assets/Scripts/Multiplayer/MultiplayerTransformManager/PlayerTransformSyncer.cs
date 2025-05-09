@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Sends the position of the player to the server.
+// Attach this to the player object
 public class PlayerTransformSyncer : MonoBehaviour
 {
     private float sendInterval = 1f / 10;

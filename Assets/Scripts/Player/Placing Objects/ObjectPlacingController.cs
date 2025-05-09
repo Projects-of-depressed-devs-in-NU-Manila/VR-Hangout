@@ -38,7 +38,7 @@ public class ObjectPlacingController : MonoBehaviour
             {
                 setPreviewObject(Instantiate(currentObjectSelected.prefab));
                 setState(State.Placing);
-                SetLayerRecursively(previewObject, LayerMask.NameToLayer("Ignore Raycast"));
+                LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("PendingWorldObject"));
                 return;
             }
         }
@@ -63,7 +63,7 @@ public class ObjectPlacingController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            LayerMask layerMask = ~LayerMask.GetMask("Floor");
+            LayerMask layerMask = LayerMask.GetMask("WorldObject");
             var ray = new Ray(playerCamera.position, playerCamera.forward);
             RaycastHit hitInfo;
 
@@ -71,7 +71,7 @@ public class ObjectPlacingController : MonoBehaviour
             {
                 hitInfo.transform.parent = null;
                 setPreviewObject(hitInfo.transform.gameObject);
-                SetLayerRecursively(previewObject, LayerMask.NameToLayer("Ignore Raycast"));
+                LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("PendingWorldObject"));
                 setState(State.Placing);
             }
         }
@@ -79,7 +79,7 @@ public class ObjectPlacingController : MonoBehaviour
 
     private void HandlePlacing()
     {
-        LayerMask layerMask = ~LayerMask.GetMask("Ignore Raycast");
+        LayerMask layerMask = ~LayerMask.GetMask("PendingWorldObject");
         var ray = new Ray(playerCamera.position, playerCamera.forward);
         RaycastHit hitInfo;
 
@@ -165,16 +165,9 @@ public class ObjectPlacingController : MonoBehaviour
     {
         previewObject.GetComponentInChildren<Renderer>().material = previewObjectOriginalMaterial;
         WorldManager.Instance.addObject(previewObject);
-        SetLayerRecursively(previewObject, LayerMask.NameToLayer("Default"));
+        LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("WorldObject"));
         previewObject = null;
         previewObjectOriginalMaterial = null;
-    }
-
-    void SetLayerRecursively(GameObject obj, int newLayer)
-    {
-        obj.layer = newLayer;
-        foreach (Transform child in obj.transform)
-            SetLayerRecursively(child.gameObject, newLayer);
     }
 
     float getPreviewObjectHeight()

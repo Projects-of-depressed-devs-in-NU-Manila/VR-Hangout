@@ -11,16 +11,12 @@ public class FreeFlyMovement : MonoBehaviour
 
     void Start()
     {
-        // Lock the cursor at start
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        // Always active movement and looking
-
-        // Mouse look
         float mouseX = Input.GetAxis("Mouse X") * lookSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * lookSensitivity;
 
@@ -30,7 +26,6 @@ public class FreeFlyMovement : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0);
 
-        // Movement
         float speed = moveSpeed;
         if (Input.GetKey(KeyCode.LeftShift))
             speed *= boostMultiplier;

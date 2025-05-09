@@ -28,7 +28,5 @@ public class WorldManager : MonoBehaviour
     public void addObject(GameObject obj)
     {
         obj.transform.parent = transform;
-        
-        // sync to other players
     }
 }

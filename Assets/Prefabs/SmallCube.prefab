@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 48245640882405850}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmallCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3253887040395074856}
   - component: {fileID: 3963912725751116269}
   - component: {fileID: 4595803026242605005}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
