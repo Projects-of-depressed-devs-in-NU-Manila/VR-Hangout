@@ -16,7 +16,7 @@ public class ObjectPlacingController : MonoBehaviour
     public State state = State.Default;
 
     public Transform playerCamera = null;
-    public WorldObjects currentObjectSelected = null;
+    public WorldObjectScriptableObject currentObjectSelected = null;
 
     public Material placingMaterial = null;
     public Material rotatingMaterial = null;

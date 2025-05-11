@@ -13,6 +13,7 @@ public class NetworkManager : MonoBehaviour
     public event Action<ConnectionMessage> onOtherPlayerConnect;
     public event Action<DisconnectionMessage> onOtherPlayerDisconnect;
     public event Action<PlayerMoveMessage> onOtherPlayerMove;
+    public event Action<WorldData> onWorldDataRecieved;
 
     private WebsocketClient ws;
     void Awake()
@@ -56,14 +57,12 @@ public class NetworkManager : MonoBehaviour
                 case "playerMove":
                     onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
                     break;
+                case "loadWorld":
+                    onWorldDataRecieved?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                    break;
             }
         } catch (Exception e){
             Debug.Log(e);
         }
-    }
-
-    string DictToStr(Dictionary<string, object> dict){
-        return JsonConvert.SerializeObject(dict); 
-
     }
 }
