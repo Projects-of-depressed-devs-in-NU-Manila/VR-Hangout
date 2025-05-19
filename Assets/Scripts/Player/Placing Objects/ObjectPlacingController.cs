@@ -16,7 +16,7 @@ public class ObjectPlacingController : MonoBehaviour
     public State state = State.Default;
 
     public Transform playerCamera = null;
-    public WorldObjectScriptableObject currentObjectSelected = null;
+    public GameObject currentObjectSelected = null;
 
     public Material placingMaterial = null;
     public Material rotatingMaterial = null;
@@ -24,6 +24,7 @@ public class ObjectPlacingController : MonoBehaviour
 
     private GameObject previewObject = null;
     private float objectHeight = 0;
+    
 
     private void Update()
     {
@@ -36,7 +37,7 @@ public class ObjectPlacingController : MonoBehaviour
         {
             if (previewObject == null) 
             {
-                setPreviewObject(Instantiate(currentObjectSelected.prefab));
+                setPreviewObject(Instantiate(currentObjectSelected));
                 setState(State.Placing);
                 LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("PendingWorldObject"));
                 return;
@@ -148,7 +149,7 @@ public class ObjectPlacingController : MonoBehaviour
         state = newState;
     }
 
-    private void setPreviewObject(GameObject obj)
+    private void setPreviewObject(UnityEngine.GameObject obj)
     {
         previewObject = obj;
         objectHeight = getPreviewObjectHeight();
@@ -164,7 +165,7 @@ public class ObjectPlacingController : MonoBehaviour
     private void finalizeObject()
     {
         previewObject.GetComponentInChildren<Renderer>().material = previewObjectOriginalMaterial;
-        WorldManager.Instance.addObject(previewObject);
+        WorldManager.Instance.AddObject(previewObject);
         LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("WorldObject"));
         previewObject = null;
         previewObjectOriginalMaterial = null;

@@ -13,7 +13,9 @@ public class NetworkManager : MonoBehaviour
     public event Action<ConnectionMessage> onOtherPlayerConnect;
     public event Action<DisconnectionMessage> onOtherPlayerDisconnect;
     public event Action<PlayerMoveMessage> onOtherPlayerMove;
-    public event Action<WorldData> onWorldDataRecieved;
+    public event Action<WorldData> onWorldObjectLoad;
+    public event Action<WorldData> onWorldObjectAdded;
+    public event Action<WorldData> onWorldObjectEditted;
 
     private WebsocketClient ws;
     void Awake()
@@ -47,7 +49,8 @@ public class NetworkManager : MonoBehaviour
         string type = (string)dataJson["type"];
 
         try{
-            switch(type){
+            switch (type)
+            {
                 case "playerConnect":
                     onOtherPlayerConnect?.Invoke(JsonHelper.FromJson<ConnectionMessage>(dataStr));
                     break;
@@ -57,8 +60,14 @@ public class NetworkManager : MonoBehaviour
                 case "playerMove":
                     onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
                     break;
-                case "loadWorld":
-                    onWorldDataRecieved?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                case "loadWorldObjects":
+                    onWorldObjectLoad?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                    break;
+                case "addWorldObjects":
+                    onWorldObjectAdded?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                    break;
+                case "editWorldObjects":
+                    onWorldObjectEditted?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
                     break;
             }
         } catch (Exception e){
