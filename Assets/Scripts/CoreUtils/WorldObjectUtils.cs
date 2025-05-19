@@ -3,16 +3,14 @@ using UnityEngine;
 
 class WorldObjectUtils{
 
-    private const string basePath = "WorldObjects/";
+    private const string basePath = "WorldObjects/Prefabs/";
 
-    public static WorldObjectScriptableObject LoadScriptableObject(string id){
-        WorldObjectScriptableObject SO= Resources.Load<WorldObjectScriptableObject>($"{basePath + id}");
+    public static GameObject LoadPrefab(string id){
+        GameObject prefab = Resources.Load<GameObject>($"{basePath + id}");
 
-        if(SO == null){
-            throw new Exception($"Cannot find World Object Scriptable Object {basePath + id}");
+        if(prefab == null){
+            throw new Exception($"Cannot find World Object {basePath + id}");
         }
-
-        return SO;
+        return prefab;
     }
-
 }
