@@ -56,6 +56,15 @@ public class NetworkManager : MonoBehaviour
                 case "playerMove":
                     onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
                     break;
+                case "webrtc-offer":
+                    WebRTCManager.Instance.OnOfferReceived(dataJson);
+                    break;
+                case "webrtc-answer":
+                    WebRTCManager.Instance.OnAnswerReceived(dataJson);
+                    break;
+                case "webrtc-ice-candidate":
+                    WebRTCManager.Instance.OnIceCandidateReceived(dataJson);
+                    break;
             }
         } catch (Exception e){
             Debug.Log(e);
