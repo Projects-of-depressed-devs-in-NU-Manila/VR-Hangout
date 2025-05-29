@@ -386,9 +386,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1417359611}
-  - component: {fileID: 1417359610}
-  - component: {fileID: 1417359612}
   - component: {fileID: 1417359609}
+  - component: {fileID: 1417359613}
+  - component: {fileID: 1417359614}
   m_Layer: 0
   m_Name: DataChannel-ClientServer
   m_TagString: Untagged
@@ -408,18 +408,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37845f7bfb9ee4458ad3f0f9b62cb45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1417359610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417359608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac59dd427cbf0a948a5644f94c5aafab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serverIp: 192.168.1.30
+  serverPort: 8082
+  autoConnect: 1
+  showChatUI: 1
+  chatUIPosition: {x: 10, y: 10}
+  chatUISize: {x: 300, y: 500}
 --- !u!4 &1417359611
 Transform:
   m_ObjectHideFlags: 0
@@ -435,7 +429,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1417359612
+--- !u!114 &1417359613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417359608}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a726fcb595d5de0478da88a95c4a85fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverIp: 192.168.1.30
+  serverPort: 8082
+  autoConnect: 1
+  sampleRate: 48000
+  bufferSize: 1024
+  echoCancellation: 1
+  noiseSuppression: 1
+  automaticGainControl: 1
+  showVoiceUI: 1
+  voiceUIPosition: {x: 10, y: 10}
+  voiceUISize: {x: 300, y: 150}
+--- !u!114 &1417359614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -444,10 +461,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1417359608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84c6aac5c5255241aeb36fd6ab4d233, type: 3}
+  m_Script: {fileID: 11500000, guid: ac59dd427cbf0a948a5644f94c5aafab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sendMessageViaChannel: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
