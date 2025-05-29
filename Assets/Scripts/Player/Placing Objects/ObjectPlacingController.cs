@@ -165,8 +165,8 @@ public class ObjectPlacingController : MonoBehaviour
     private void finalizeObject()
     {
         previewObject.GetComponentInChildren<Renderer>().material = previewObjectOriginalMaterial;
-        WorldManager.Instance.AddObject(previewObject);
         LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("WorldObject"));
+        WorldManager.Instance.AddObject(previewObject);
         previewObject = null;
         previewObjectOriginalMaterial = null;
     }

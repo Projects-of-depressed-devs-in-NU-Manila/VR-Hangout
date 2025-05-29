@@ -48,30 +48,27 @@ public class NetworkManager : MonoBehaviour
     void OnDataRecieved(Dictionary<string, object> dataJson, string dataStr){
         string type = (string)dataJson["type"];
 
-        try{
-            switch (type)
-            {
-                case "playerConnect":
-                    onOtherPlayerConnect?.Invoke(JsonHelper.FromJson<ConnectionMessage>(dataStr));
-                    break;
-                case "playerDisconnect":
-                    onOtherPlayerDisconnect?.Invoke(JsonHelper.FromJson<DisconnectionMessage>(dataStr));
-                    break;
-                case "playerMove":
-                    onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
-                    break;
-                case "loadWorldObjects":
-                    onWorldObjectLoad?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
-                    break;
-                case "addWorldObjects":
-                    onWorldObjectAdded?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
-                    break;
-                case "editWorldObjects":
-                    onWorldObjectEditted?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
-                    break;
-            }
-        } catch (Exception e){
-            Debug.Log(e);
+        switch (type)
+        {
+            case "playerConnect":
+                onOtherPlayerConnect?.Invoke(JsonHelper.FromJson<ConnectionMessage>(dataStr));
+                break;
+            case "playerDisconnect":
+                onOtherPlayerDisconnect?.Invoke(JsonHelper.FromJson<DisconnectionMessage>(dataStr));
+                break;
+            case "playerMove":
+                onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
+                break;
+            case "loadWorldObjects":
+                onWorldObjectLoad?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                break;
+            case "addWorldObjects":
+                onWorldObjectAdded?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                break;
+            case "editWorldObjects":
+                onWorldObjectEditted?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                break;
         }
+
     }
 }

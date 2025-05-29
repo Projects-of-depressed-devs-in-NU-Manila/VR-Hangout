@@ -22,7 +22,7 @@ public struct WorldObject
 
         worldObject.position = obj.transform.position;
         worldObject.rotation = obj.transform.eulerAngles;
-        worldObject.scale = obj.transform.localScale;
+        worldObject.scale = obj.transform.lossyScale;
         return worldObject;
     }    
 }
