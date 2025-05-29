@@ -17,10 +17,12 @@ public class PlayerTransformSyncer : MonoBehaviour
 
         if (sendTimer >= sendInterval){
             if (Vector3.Distance(transform.position, lastSentPosition) > positionThreshold){
-                PlayerMoveMessage message = new PlayerMoveMessage(){
-                    type = "playerMove", 
-                    playerId=PlayerContext.Instance.playerId, 
-                    position=transform.position
+                PlayerMoveMessage message = new PlayerMoveMessage()
+                {
+                    type = "playerMove",
+                    playerId = PlayerContext.Instance.playerId,
+                    position = transform.position,
+                    rotation = transform.rotation.eulerAngles
                 };
 
                 NetworkManager.Instance.Broadcast(JsonHelper.ToJson(message));

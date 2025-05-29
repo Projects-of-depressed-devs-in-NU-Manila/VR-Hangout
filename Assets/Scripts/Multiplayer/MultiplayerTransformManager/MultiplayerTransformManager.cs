@@ -33,6 +33,8 @@ public class MultiplayerMovementManager : MonoBehaviour
 
     void OnPlayerMove(PlayerMoveMessage message){
         players[message.playerId].transform.position = message.position;
+        players[message.playerId].transform.rotation = Quaternion.Euler(message.rotation);
+
     }
 
     void OnDestroy()
