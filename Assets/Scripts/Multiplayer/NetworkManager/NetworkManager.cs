@@ -16,6 +16,7 @@ public class NetworkManager : MonoBehaviour
     public event Action<WorldData> onWorldObjectLoad;
     public event Action<WorldData> onWorldObjectAdded;
     public event Action<WorldData> onWorldObjectEditted;
+    public event Action onConnect;
 
     private WebsocketClient ws;
     void Awake()
@@ -28,12 +29,12 @@ public class NetworkManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    async void Start()
     {
         ws = new WebsocketClient();
-        _ = ws.Connect($"ws://localhost:8000/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
+        await ws.Connect($"ws://localhost:8000/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
         ws.addRecievedCallback(OnDataRecieved);
-        
+        onConnect.Invoke();
     }
 
     void OnDestroy()

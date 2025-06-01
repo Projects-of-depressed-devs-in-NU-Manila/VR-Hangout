@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -8,8 +9,24 @@ using UnityEngine;
 public class MultiplayerMovementManager : MonoBehaviour
 {
     [SerializeField] private GameObject characterPrefab;
+    public static MultiplayerMovementManager Instance;
 
     private Dictionary<string, GameObject> players;
+
+    public event Action<string, GameObject> onPlayerSpawn;
+    public event Action<string> onPlayerDespawn;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -23,12 +40,13 @@ public class MultiplayerMovementManager : MonoBehaviour
     void OnPlayerConnect(ConnectionMessage message){
         GameObject player = Instantiate(characterPrefab, transform);
         players.Add(message.playerId, player);
-
+        onPlayerSpawn(message.playerId, player);
     }
 
     void OnPlayerDisconnect(DisconnectionMessage message){
         Destroy(players[message.playerId], 1f);
         players.Remove(message.playerId);
+        onPlayerDespawn(message.playerId);
     }
 
     void OnPlayerMove(PlayerMoveMessage message){

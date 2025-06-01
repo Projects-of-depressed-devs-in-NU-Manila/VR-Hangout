@@ -136,6 +136,8 @@ GameObject:
   - component: {fileID: 761489998}
   - component: {fileID: 761489999}
   - component: {fileID: 761490000}
+  - component: {fileID: 761490002}
+  - component: {fileID: 761490001}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -310,6 +312,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: Wip9592kjS
+--- !u!114 &761490001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761489991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46062ba72097aa546a1c5e16d19c827f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Instance: {fileID: 0}
+--- !u!114 &761490002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761489991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e38a7bfcc729345bea7fb71cb2a481, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1283915496
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1336769046}
   - component: {fileID: 1336769047}
+  - component: {fileID: 1336769048}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -489,6 +517,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19ed91ee06e25944a9fda51b7c7509ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tickInterval: 5
+--- !u!114 &1336769048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336769045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3bd19b61da52748acfc3b65a3c7b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tickInterval: 5
@@ -747,7 +788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc4f09c48264b64e90697e78d243909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefab: {fileID: 1572933421174860984, guid: cbab0cbf0d8d42d4aa59a15120863e5d, type: 3}
+  characterPrefab: {fileID: 5474476931978143431, guid: d7d8036fbc74cea4e8eed6f8f0cafff9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
