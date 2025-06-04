@@ -34,4 +34,10 @@ public struct WorldData
     public List<WorldObject> objects { get; set; }
 }
 
+public struct ChangeWorld
+{
+    public string type;
+    public string worldId;
+}
+
 

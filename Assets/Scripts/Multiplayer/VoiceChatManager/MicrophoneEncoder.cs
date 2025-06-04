@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityOpus;
 
 [RequireComponent(typeof(MicrophoneRecorder))]
 public class MicrophoneEncoder : MonoBehaviour {
     public MicrophoneEncoder Instance;
-
-    public event Action<byte[], int> OnEncoded;
 
     const int bitrate = 96000;
     const int frameSize = 120;

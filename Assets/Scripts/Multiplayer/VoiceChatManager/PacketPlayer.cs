@@ -4,44 +4,76 @@ using System;
 using UnityOpus;
 
 [RequireComponent(typeof(PacketDecoder))]
-public class PacketPlayer : MonoBehaviour {
-    const NumChannels channels = NumChannels.Mono;
-    const SamplingFrequency frequency = SamplingFrequency.Frequency_48000;
-    const int audioClipLength = 1024 * 6;
-    AudioSource source;
-    int head = 0;
-    float[] audioClipData;
+[RequireComponent(typeof(AudioSource))]
+public class PacketPlayer : MonoBehaviour
+{
+    const int SampleRate = 48000 / 2;
+    const int NumChannels = 1;                  // Mono
+    const int BufferSeconds = 2;                // 2-second ring buffer
+    static readonly int BufferSize = SampleRate * BufferSeconds;
 
-    PacketDecoder decoder;
+    private float[] ringBuffer = new float[BufferSize];
+    private int writePos = 0;
+    private int readPos = 0;
+    private object lockObj = new object();
+
+    private PacketDecoder decoder;
+    private AudioSource source;
 
     void Start()
     {
-        source = gameObject.GetComponent<AudioSource>();
-        decoder = gameObject.GetComponent<PacketDecoder>();
+        source = GetComponent<AudioSource>();
+        decoder = GetComponent<PacketDecoder>();
         decoder.OnDecoded += OnDecoded;
     }
 
-    void OnEnable() {
+    void OnEnable()
+    {
+        // Ensure AudioSource exists and starts playing so that OnAudioFilterRead() is called.
         source = GetComponent<AudioSource>();
-        source.clip = AudioClip.Create("Loopback", audioClipLength, (int)channels, (int)frequency, false);
+        source.clip = null;    // No clip—audio will come from OnAudioFilterRead
         source.loop = true;
+        source.playOnAwake = false;
+        // source.pitch = 0.5f;
+        source.Play();
     }
 
-    void OnDisable() {
+    void OnDisable()
+    {
         source.Stop();
     }
 
-    void OnDecoded(float[] pcm, int pcmLength) {
-        if (audioClipData == null || audioClipData.Length != pcmLength) {
-            // assume that pcmLength will not change.
-            audioClipData = new float[pcmLength];
+    // This is called whenever PacketDecoder has a decoded PCM frame
+    void OnDecoded(float[] pcm, int pcmLength)
+    {
+        lock (lockObj)
+        {
+            for (int i = 0; i < pcmLength; i++)
+            {
+                ringBuffer[writePos] = pcm[i];
+                writePos = (writePos + 1) % BufferSize;
+
+                // If writePos catches up to readPos, advance readPos to avoid overwrite
+                if (writePos == readPos)
+                {
+                    readPos = (readPos + 1) % BufferSize;
+                }
+            }
         }
-        Array.Copy(pcm, audioClipData, pcmLength);
-        source.clip.SetData(audioClipData, head);
-        head += pcmLength;
-        if (!source.isPlaying && head > audioClipLength / 2) {
-            source.Play();
+    }
+
+    // Unity will call this when the AudioSource needs more data
+    // 'data' is the buffer we must fill; its length = frames * NumChannels
+    void OnAudioFilterRead(float[] data, int channels)
+    {
+        lock (lockObj)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = ringBuffer[readPos];
+                readPos = (readPos + 1) % BufferSize;
+            }
         }
-        head %= audioClipLength;
     }
 }
+

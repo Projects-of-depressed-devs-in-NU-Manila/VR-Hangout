@@ -54,6 +54,6 @@ public class VoiceNetworkManager : MonoBehaviour
     }
 
     void OnDataRecieved(VoicePacket packet){
-        decoders[packet.playerId].Decode(packet.data, packet.length);
+        decoders[packet.playerId].QueuePacket(packet);
     }
 }

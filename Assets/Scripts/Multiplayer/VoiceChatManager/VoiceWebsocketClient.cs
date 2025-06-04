@@ -8,7 +8,6 @@ using UnityEngine;
 
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using UnityEditor.MemoryProfiler;
 
 public class VoiceWebsocketClient{
     private ClientWebSocket ws;
