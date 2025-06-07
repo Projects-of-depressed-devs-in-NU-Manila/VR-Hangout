@@ -8,8 +8,11 @@ public class WorldManager : MonoBehaviour
 {
     public static WorldManager Instance;
 
-    private string worldId;
+    public string worldId;
+    public GameObject HubPrefab;
     private Dictionary<string, GameObject> worldObjects;
+    private event Action worldStartedLoading;
+    private event Action worldFinishedLoading;
 
     public bool isLoading = true;
 
@@ -29,30 +32,59 @@ public class WorldManager : MonoBehaviour
     {
         worldObjects = new Dictionary<string, GameObject>();
         NetworkManager.Instance.onWorldObjectLoad += LoadWorld;
+        NetworkManager.Instance.onGoToHub += GoToHub;
     }
 
-    void Update()
+    public void ClearWorld()
     {
-        
+        foreach (Transform child in transform)
+            Destroy(child.gameObject);
+
+        worldObjects.Clear();
     }
 
-    public void LoadWorld(WorldData data){
+    public void GoToHub()
+    {
+        ClearWorld();
+        isLoading = true;
+        worldStartedLoading?.Invoke();
+        Debug.Log("Instantiating hub");
+        Instantiate(HubPrefab, transform);
+        isLoading = false;
+        worldFinishedLoading?.Invoke();
+    }
+
+    public void LoadWorld(WorldData data)
+    {
+        worldStartedLoading?.Invoke();
+        isLoading = true;
+        ClearWorld();
+
         Debug.Log($"Loading world: {data.worldId}");
         isLoading = true;
         worldId = data.worldId;
-        foreach(WorldObject worldObject in data.objects){
+
+        if (worldId == "1b7Tmo6Yj0")
+        {
+            Debug.Log("Breakpoint");
+        }
+
+        foreach (WorldObject worldObject in data.objects)
+        {
             GameObject prefab = WorldObjectUtils.LoadPrefab(worldObject.objectId);
             GameObject obj = Instantiate(prefab, transform);
             worldObjects.Add(worldObject.worldObjectId, obj);
 
-            if(worldObject.objectId[0] != '_'){
+            if (worldObject.objectId[0] != '_')
+            {
                 LayerMaskUtils.SetLayerRecursively(obj, LayerMask.NameToLayer("WorldObject"));
             }
 
             obj.transform.position = worldObject.position;
             obj.transform.localRotation = Quaternion.Euler(worldObject.rotation.x, worldObject.rotation.y, worldObject.rotation.z);
-            obj.transform.localScale = worldObject.scale;
+            Debug.Log("Adding scale....");
 
+            obj.transform.localScale = worldObject.scale;
 
             WorldObjectComponent component = obj.GetComponent<WorldObjectComponent>();
             if (component == null)
@@ -61,7 +93,8 @@ public class WorldManager : MonoBehaviour
             component.worldObjectId = worldObject.worldObjectId;
             component.objectId = worldObject.objectId;
         }
-        isLoading = true;
+        worldFinishedLoading?.Invoke();
+        isLoading = false;
         Debug.Log($"Loaded {data.objects.Count} Objects");
     }
 
@@ -99,6 +132,7 @@ public class WorldManager : MonoBehaviour
     void OnDestroy()
     {
         NetworkManager.Instance.onWorldObjectLoad -= LoadWorld;
+        NetworkManager.Instance.onGoToHub -= GoToHub;
     }
     
 }

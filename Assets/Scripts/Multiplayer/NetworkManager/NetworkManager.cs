@@ -16,6 +16,7 @@ public class NetworkManager : MonoBehaviour
     public event Action<WorldData> onWorldObjectLoad;
     public event Action<WorldData> onWorldObjectAdded;
     public event Action<WorldData> onWorldObjectEditted;
+    public event Action onGoToHub;
     public event Action onConnect;
 
     private WebsocketClient ws;
@@ -69,6 +70,11 @@ public class NetworkManager : MonoBehaviour
             case "editWorldObjects":
                 onWorldObjectEditted?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
                 break;
+            case "goToHub":
+                Debug.Log("Sending go to hub events");
+                onGoToHub?.Invoke();
+                break;
+
         }
 
     }
