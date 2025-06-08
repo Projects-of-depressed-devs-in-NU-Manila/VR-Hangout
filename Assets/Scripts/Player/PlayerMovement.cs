@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform cameraTransform;
 
     private Rigidbody rb;
+    private bool canMove;
     private float verticalLookRotation = 0f;
     private bool isGrounded;
     private Vector2 input;
@@ -29,21 +30,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (isFishing == false)
+        if (!isFishing) { canMove = true; }
+        if (canMove)
         {
             HandleLook();
             HandleInput();
             HandleJump();
-        }
-        HandleFishing();
-    }
-
-    void FixedUpdate()
-    {
-        if (isFishing == false)
-        {
             HandleMovement();
         }
+        HandleFishing();
     }
 
     private void HandleLook()
@@ -73,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         if (insideFishingRegion && Input.GetKeyDown(KeyCode.E))
         {
             bool newState = !isFishing;
+            canMove = !canMove;
             SetFishing(newState);
             Debug.Log("Fishing toggled. New state: " + newState);
         }
@@ -172,9 +168,14 @@ public class PlayerMovement : MonoBehaviour
             fishGame.SetActive(true);
         }
     }
-    
-        public bool IsFishing()
+
+    public bool IsFishing()
     {
         return isFishing;
+    }
+
+    public void setCanMove(bool Move)
+    {
+        canMove = Move;
     }
 }
