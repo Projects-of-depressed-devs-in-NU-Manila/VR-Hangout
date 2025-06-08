@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,66 +8,173 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     public Transform cameraTransform;
 
-    private float maxLookAngle = 70f;
     private Rigidbody rb;
     private float verticalLookRotation = 0f;
     private bool isGrounded;
     private Vector2 input;
-    private bool isRunning;
+    private bool isFishing = false;
+    [SerializeField] private GameObject fishGame;
+    private bool insideFishingRegion;
     private Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         rb.freezeRotation = true;
     }
+
     void Update()
     {
-        input.x = Input.GetAxisRaw("Horizontal");
-        input.y = Input.GetAxisRaw("Vertical");
+        if (isFishing == false)
+        {
+            HandleLook();
+            HandleInput();
+            HandleJump();
+        }
+        HandleFishing();
+    }
+
+    void FixedUpdate()
+    {
+        if (isFishing == false)
+        {
+            HandleMovement();
+        }
+    }
+
+    private void HandleLook()
+    {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        bool runKeyHeld = Input.GetKey(KeyCode.LeftShift);
-        bool isMoving = input.sqrMagnitude > 0.1f;
-        bool isRunning = isMoving && runKeyHeld;
-        float currentSpeed = moveSpeed;
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            currentSpeed *= 2f;
-        }
+        transform.Rotate(Vector3.up * mouseX);
+        verticalLookRotation -= mouseY; ;
+        cameraTransform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);
+    }
 
-        if (isMoving)
-        {
-            Vector3 moveDir = transform.forward * input.y + transform.right * input.x;
-            transform.position += moveDir.normalized * currentSpeed * Time.deltaTime;
-        }
+    private void HandleInput()
+    {
+        input.x = Input.GetAxisRaw("Horizontal");
+        input.y = Input.GetAxisRaw("Vertical");
+
+        bool isMoving = input.sqrMagnitude > 0.1f;
+        bool isRunning = isMoving && Input.GetKey(KeyCode.LeftShift);
 
         animator.SetBool("isWalking", isMoving);
         animator.SetBool("isRunning", isRunning);
+    }
 
-        transform.Rotate(Vector3.up * mouseX);
-        verticalLookRotation -= mouseY;
-        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -maxLookAngle, maxLookAngle);
-        cameraTransform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+    private void HandleFishing()
+    {
+        if (insideFishingRegion && Input.GetKeyDown(KeyCode.E))
         {
+            bool newState = !isFishing;
+            SetFishing(newState);
+            Debug.Log("Fishing toggled. New state: " + newState);
+        }
+    }
+
+
+    private void HandleJump()
+    {
+        CheckGrounded();
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isFishing)
+        {
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
-
-    void OnCollisionStay(Collision collision)
+    private void HandleMovement()
     {
-        isGrounded = true;
+        if (isFishing || input.sqrMagnitude <= 0.1f) return;
+
+        Vector3 moveDir = transform.forward * input.y + transform.right * input.x;
+        float speed = moveSpeed;
+
+        if (Input.GetKey(KeyCode.LeftShift)) speed *= 2f;
+
+        Vector3 move = moveDir.normalized * speed;
+        Vector3 velocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
+        rb.linearVelocity = velocity;
     }
 
-    void OnCollisionExit(Collision collision)
+
+    private void CheckGrounded()
     {
-        isGrounded = false;
+        Ray ray = new Ray(transform.position + Vector3.up * 0.2f, Vector3.down);
+        isGrounded = Physics.Raycast(ray, 0.6f);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("FishingZone"))
+        {
+            insideFishingRegion = true;
+            Debug.Log("Inside Fish Region");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("FishingZone"))
+        {
+            insideFishingRegion = false;
+            Debug.Log("Outside Fish Region");
+        }
+    }
+
+    public void SetFishing(bool fishing)
+    {
+        isFishing = fishing;
+        animator.SetBool("isFishing", fishing);
+
+        if (fishGame == null)
+        {
+            Debug.LogWarning("fishGame reference is null!");
+            return;
+        }
+
+        if (fishing)
+        {
+            fishGame.GetComponent<Fishgame>().ResetGame();
+
+            StartCoroutine(ShowFishingUIWithDelay(5f));
+        }
+        else
+        {
+            fishGame.SetActive(false);
+        }
+
+        if (fishing)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
+
+    private IEnumerator ShowFishingUIWithDelay(float delay)
+    {
+        fishGame.SetActive(false);
+        yield return new WaitForSeconds(delay);
+        if (isFishing)
+        {
+            fishGame.SetActive(true);
+        }
+    }
+    
+        public bool IsFishing()
+    {
+        return isFishing;
     }
 }
