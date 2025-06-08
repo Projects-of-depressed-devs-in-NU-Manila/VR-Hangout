@@ -16,28 +16,38 @@ public class ObjectPlacingController : MonoBehaviour
     public State state = State.Default;
 
     public Transform playerCamera = null;
-    public GameObject currentObjectSelected = null;
 
     public Material placingMaterial = null;
     public Material rotatingMaterial = null;
     public Material previewObjectOriginalMaterial = null;
 
     private GameObject previewObject = null;
+    private InventoryItem currentInventoryItem;
     private float objectHeight = 0;
     
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            setState(State.Default);
-            setPreviewVisibility(false);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (previewObject == null) 
+            if (state != State.Default)
             {
-                setPreviewObject(Instantiate(currentObjectSelected));
+                setState(State.Default);
+                setPreviewVisibility(false);
+                Destroy(previewObject);
+                previewObject = null;
+                return;
+            }
+
+            if (previewObject == null)
+            {
+                currentInventoryItem = InventoryManager.Instance.equippedItem;
+                if (currentInventoryItem.object_id == "" || currentInventoryItem.object_id == null) {
+                    return;
+                }
+
+                GameObject equippedItem = WorldObjectUtils.LoadPrefab(currentInventoryItem.object_id);
+                setPreviewObject(Instantiate(equippedItem));
                 setState(State.Placing);
                 LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("PendingWorldObject"));
                 return;
@@ -51,11 +61,9 @@ public class ObjectPlacingController : MonoBehaviour
                 return;
             case State.Placing:
                 HandlePlacing();
-                HandleScaling();
                 break;
             case State.Rotating:
                 HandleRotating();
-                HandleScaling();
                 break;
         }
     }
@@ -169,6 +177,25 @@ public class ObjectPlacingController : MonoBehaviour
         WorldManager.Instance.AddObject(previewObject);
         previewObject = null;
         previewObjectOriginalMaterial = null;
+
+
+        if (currentInventoryItem.object_id != null) // nothing equipped maybe editing object
+        {
+            InventoryItem request = new InventoryItem();
+            request.object_id = currentInventoryItem.object_id;
+            request.player_id = currentInventoryItem.player_id;
+            request.qty = 1;
+            InventoryManager.Instance.RemoveInventoryItem(request);
+        }
+        if (currentInventoryItem.qty == 1)
+        {
+            InventoryManager.Instance.SetEquippedItem(new InventoryItem());
+            currentInventoryItem = new InventoryItem();
+        }
+        else {
+            currentInventoryItem.qty -= 1;
+            InventoryManager.Instance.SetEquippedItem(currentInventoryItem);
+        }
     }
 
     float getPreviewObjectHeight()

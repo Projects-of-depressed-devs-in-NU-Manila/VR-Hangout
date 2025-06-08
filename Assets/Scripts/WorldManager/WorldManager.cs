@@ -112,7 +112,14 @@ public class WorldManager : MonoBehaviour
         editWorldData.worldId = worldId;
         editWorldData.objects = new List<WorldObject>();
 
-        obj.GetComponent<WorldObjectComponent>().worldId = worldId;
+        try
+        {
+            obj.GetComponent<WorldObjectComponent>().worldId = worldId;
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e);
+        }
 
         WorldObject worldObject = WorldObject.FromGameObject(obj);
 
