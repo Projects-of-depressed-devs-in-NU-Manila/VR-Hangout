@@ -48,35 +48,47 @@ public class WebsocketClient{
 
     public async Task StartRecieveLoop()
     {
-        var buffer = new byte[2048];
+        var buffer = new byte[2048 * 4];
         var memoryStream = new MemoryStream();
 
-        while (ws.State == WebSocketState.Open)
+        try
         {
-            memoryStream.SetLength(0); // reset the stream
-
-            WebSocketReceiveResult result;
-
-            do
+            while (ws.State == WebSocketState.Open)
             {
-                result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), cts.Token);
-                memoryStream.Write(buffer, 0, result.Count);
-            }
-            while (!result.EndOfMessage);
+                memoryStream.SetLength(0); // reset the stream
 
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            string dataStr = Encoding.UTF8.GetString(memoryStream.ToArray());
+                WebSocketReceiveResult result;
 
-            Dictionary<string, object> dataJson = StrToDict(dataStr);
+                do
+                {
+                    result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), cts.Token);
+                    memoryStream.Write(buffer, 0, result.Count);
+                }
+                while (!result.EndOfMessage);
 
-            foreach (var callback in recievedCallbacks)
-            {
-                callback.Invoke(dataJson, dataStr);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                string dataStr = Encoding.UTF8.GetString(memoryStream.ToArray());
+
+                Dictionary<string, object> dataJson = StrToDict(dataStr);
+
+                if ((string)dataJson["type"] == "chat")
+                {
+                    Debug.Log("Breakpoint");
+                }
+
+                foreach (var callback in recievedCallbacks)
+                {
+                    callback?.Invoke(dataJson, dataStr);
+                }
             }
         }
+        catch(Exception e)
+        {
+            Debug.LogError(e);
+            Debug.LogError("Connection to server closed");
+            Application.Quit();
+        }
 
-        Debug.LogError("Connection to server closed");
-        Application.Quit();
     }
 
     private Dictionary<string, object> StrToDict(string dataStr){

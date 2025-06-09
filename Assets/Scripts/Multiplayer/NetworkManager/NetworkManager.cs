@@ -16,6 +16,7 @@ public class NetworkManager : MonoBehaviour
     public event Action<WorldData> onWorldObjectLoad;
     public event Action<WorldData> onWorldObjectAdded;
     public event Action<WorldData> onWorldObjectEditted;
+    public event Action<Chat> OnChatRecieved;
     public event Action onGoToHub;
     public event Action onConnect;
 
@@ -35,7 +36,7 @@ public class NetworkManager : MonoBehaviour
         ws = new WebsocketClient();
         await ws.Connect($"ws://localhost:8000/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
         ws.addRecievedCallback(OnDataRecieved);
-        onConnect.Invoke();
+        onConnect?.Invoke();
     }
 
     void OnDestroy()
@@ -73,6 +74,9 @@ public class NetworkManager : MonoBehaviour
             case "goToHub":
                 Debug.Log("Sending go to hub events");
                 onGoToHub?.Invoke();
+                break;
+            case "chat":
+                OnChatRecieved?.Invoke(JsonHelper.FromJson<Chat>(dataStr));
                 break;
 
         }

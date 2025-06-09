@@ -13,6 +13,9 @@ public class GameUIManager : MonoBehaviour
     public event Action<bool> shouldCursorLock;
     public event Action<bool> shouldDisableKeyboard;
 
+    public GameObject chatPrefab;
+    public GameObject chatHistoryPanel;
+
     public GameObject icons;
     public GameObject worldChat;
     public GameObject equippedItem;
@@ -45,6 +48,8 @@ public class GameUIManager : MonoBehaviour
 
     void Start()
     {
+        NetworkManager.Instance.OnChatRecieved += OnChatRecieved; 
+
         shouldDisableKeyboard += setIsTyping;
         icons.SetActive(true);
         worldChat.SetActive(true);
@@ -65,7 +70,7 @@ public class GameUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             handleEscape();
 
-        if (isTyping) 
+        if (isTyping)
             return;
 
         if (EventSystem.current.currentSelectedGameObject == friendIdInput)
@@ -88,12 +93,18 @@ public class GameUIManager : MonoBehaviour
         {
             Debug.Log("Chat off");
 
-            // send chat to network
+            Chat chat = new Chat();
+            chat.type = "chat";
+            chat.player_id = PlayerContext.Instance.playerId;
+            chat.player_name = PlayerContext.Instance.playerName;
+            chat.message = chatInput.text;
+            NetworkManager.Instance.Broadcast(JsonHelper.ToJson(chat));
+
 
             shouldDisableKeyboard?.Invoke(false);
             chatInput.text = "";
             chatInput.DeactivateInputField(true);
-            EventSystem.current.SetSelectedGameObject(null); 
+            EventSystem.current.SetSelectedGameObject(null);
         }
         else
         {
@@ -129,7 +140,7 @@ public class GameUIManager : MonoBehaviour
     {
         if (friendsMenu.activeInHierarchy)
         {
-            
+
 
             shouldCursorLock?.Invoke(true);
             friendsMenu.SetActive(false);
@@ -165,7 +176,7 @@ public class GameUIManager : MonoBehaviour
     {
         if (inventory.activeInHierarchy)
         {
-            
+
             shouldCursorLock?.Invoke(true);
             worldMenu.SetActive(false);
         }
@@ -185,5 +196,11 @@ public class GameUIManager : MonoBehaviour
         worldMenu.SetActive(false);
         inventory.SetActive(false);
         friendsMenu.SetActive(false);
+    }
+
+    public void OnChatRecieved(Chat chat)
+    {
+        GameObject chat1 = Instantiate(chatPrefab, chatHistoryPanel.transform);
+        chat1.GetComponent<TMP_Text>().text = $"{chat.player_name}: {chat.message}";
     }
 }
