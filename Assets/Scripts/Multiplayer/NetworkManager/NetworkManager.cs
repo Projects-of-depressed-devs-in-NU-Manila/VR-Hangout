@@ -34,7 +34,7 @@ public class NetworkManager : MonoBehaviour
     async void Start()
     {
         ws = new WebsocketClient();
-        await ws.Connect($"ws://localhost:8000/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
+        await ws.Connect($"ws://vrhangout.cottonbuds.dev/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
         ws.addRecievedCallback(OnDataRecieved);
         onConnect?.Invoke();
     }
@@ -51,35 +51,40 @@ public class NetworkManager : MonoBehaviour
     void OnDataRecieved(Dictionary<string, object> dataJson, string dataStr){
         string type = (string)dataJson["type"];
 
-        switch (type)
+        try
         {
-            case "playerConnect":
-                onOtherPlayerConnect?.Invoke(JsonHelper.FromJson<ConnectionMessage>(dataStr));
-                break;
-            case "playerDisconnect":
-                onOtherPlayerDisconnect?.Invoke(JsonHelper.FromJson<DisconnectionMessage>(dataStr));
-                break;
-            case "playerMove":
-                onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
-                break;
-            case "loadWorldObjects":
-                onWorldObjectLoad?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
-                break;
-            case "addWorldObjects":
-                onWorldObjectAdded?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
-                break;
-            case "editWorldObjects":
-                onWorldObjectEditted?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
-                break;
-            case "goToHub":
-                Debug.Log("Sending go to hub events");
-                onGoToHub?.Invoke();
-                break;
-            case "chat":
-                OnChatRecieved?.Invoke(JsonHelper.FromJson<Chat>(dataStr));
-                break;
-
+            switch (type)
+            {
+                case "playerConnect":
+                    onOtherPlayerConnect?.Invoke(JsonHelper.FromJson<ConnectionMessage>(dataStr));
+                    break;
+                case "playerDisconnect":
+                    onOtherPlayerDisconnect?.Invoke(JsonHelper.FromJson<DisconnectionMessage>(dataStr));
+                    break;
+                case "playerMove":
+                    onOtherPlayerMove?.Invoke(JsonHelper.FromJson<PlayerMoveMessage>(dataStr));
+                    break;
+                case "loadWorldObjects":
+                    onWorldObjectLoad?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                    break;
+                case "addWorldObjects":
+                    onWorldObjectAdded?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                    break;
+                case "editWorldObjects":
+                    onWorldObjectEditted?.Invoke(JsonHelper.FromJson<WorldData>(dataStr));
+                    break;
+                case "goToHub":
+                    Debug.Log("Sending go to hub events");
+                    onGoToHub?.Invoke();
+                    break;
+                case "chat":
+                    OnChatRecieved?.Invoke(JsonHelper.FromJson<Chat>(dataStr));
+                    break;
+            }
         }
-
+        catch(Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 }

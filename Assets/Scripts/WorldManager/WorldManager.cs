@@ -33,6 +33,44 @@ public class WorldManager : MonoBehaviour
         worldObjects = new Dictionary<string, GameObject>();
         NetworkManager.Instance.onWorldObjectLoad += LoadWorld;
         NetworkManager.Instance.onGoToHub += GoToHub;
+        NetworkManager.Instance.onWorldObjectEditted += OnWorldEdit;
+        NetworkManager.Instance.onWorldObjectAdded += OnWorldAdd;
+    }
+
+    public void OnWorldEdit(WorldData data)
+    {
+        foreach (WorldObject worldObject in data.objects)
+        {
+            worldObjects[worldObject.worldObjectId].transform.position = worldObject.position;
+            worldObjects[worldObject.worldObjectId].transform.rotation = Quaternion.Euler(worldObject.rotation);
+            worldObjects[worldObject.worldObjectId].transform.localScale = worldObject.scale;
+        }
+    }
+
+    public void OnWorldAdd(WorldData data)
+    {
+        foreach (WorldObject worldObject in data.objects)
+        {
+            GameObject prefab = WorldObjectUtils.LoadPrefab(worldObject.objectId);
+            GameObject obj = Instantiate(prefab, transform);
+            worldObjects.Add(worldObject.worldObjectId, obj);
+
+            if (worldObject.objectId[0] != '_')
+            {
+                LayerMaskUtils.SetLayerRecursively(obj, LayerMask.NameToLayer("WorldObject"));
+            }
+
+            obj.transform.position = worldObject.position;
+            obj.transform.localRotation = Quaternion.Euler(worldObject.rotation.x, worldObject.rotation.y, worldObject.rotation.z);
+            obj.transform.localScale = worldObject.scale;
+
+            WorldObjectComponent component = obj.GetComponent<WorldObjectComponent>();
+            if (component == null)
+                component = obj.AddComponent<WorldObjectComponent>();
+            component.worldId = worldObject.worldId;
+            component.worldObjectId = worldObject.worldObjectId;
+            component.objectId = worldObject.objectId;
+        }
     }
 
     public void ClearWorld()
@@ -63,11 +101,6 @@ public class WorldManager : MonoBehaviour
         Debug.Log($"Loading world: {data.worldId}");
         isLoading = true;
         worldId = data.worldId;
-
-        if (worldId == "1b7Tmo6Yj0")
-        {
-            Debug.Log("Breakpoint");
-        }
 
         foreach (WorldObject worldObject in data.objects)
         {

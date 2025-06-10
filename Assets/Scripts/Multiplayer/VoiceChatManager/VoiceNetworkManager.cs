@@ -45,7 +45,7 @@ public class VoiceNetworkManager : MonoBehaviour
 
     void OnDestroy()
     {
-        _ = ws.Disconnect();
+        _ = ws?.Disconnect();
     }
 
     public void Broadcast(byte[] data, int length){
