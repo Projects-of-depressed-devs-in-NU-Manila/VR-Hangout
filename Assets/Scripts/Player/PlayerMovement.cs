@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,7 +7,8 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float mouseSensitivity = 2f;
     public float jumpForce = 5f;
-    public Transform cameraTransform;
+    public Transform cameraPivot;
+    public GameObject fishingRod;
 
     private Rigidbody rb;
     private bool canMove;
@@ -33,10 +35,18 @@ public class PlayerMovement : MonoBehaviour
         if (!isFishing) { canMove = true; }
         if (canMove)
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
             HandleLook();
             HandleInput();
             HandleJump();
             HandleMovement();
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         HandleFishing();
     }
@@ -46,9 +56,13 @@ public class PlayerMovement : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        transform.Rotate(Vector3.up * mouseX);
-        verticalLookRotation -= mouseY; ;
-        cameraTransform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);
+        Quaternion deltaRotation = Quaternion.Euler(0f, mouseX, 0f);
+        rb.MoveRotation(rb.rotation * deltaRotation);
+
+        verticalLookRotation -= mouseY;
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -40f, 40f);
+
+        cameraPivot.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);
     }
 
     private void HandleInput()
@@ -65,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFishing()
     {
-        if (insideFishingRegion && Input.GetKeyDown(KeyCode.E))
+        if (insideFishingRegion && Input.GetKeyDown(KeyCode.F))
         {
             bool newState = !isFishing;
             canMove = !canMove;
@@ -151,11 +165,13 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            fishingRod.SetActive(true);
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            fishingRod.SetActive(false);
         }
     }
 

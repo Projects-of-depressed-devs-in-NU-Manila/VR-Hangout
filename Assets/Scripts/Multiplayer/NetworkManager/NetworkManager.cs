@@ -50,7 +50,6 @@ public class NetworkManager : MonoBehaviour
 
     void OnDataRecieved(Dictionary<string, object> dataJson, string dataStr){
         string type = (string)dataJson["type"];
-
         try
         {
             switch (type)
@@ -80,11 +79,12 @@ public class NetworkManager : MonoBehaviour
                 case "chat":
                     OnChatRecieved?.Invoke(JsonHelper.FromJson<Chat>(dataStr));
                     break;
+
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            Debug.LogError(e);
+            Debug.Log("Error:" + e);
         }
     }
 }
