@@ -11,8 +11,8 @@ public class WorldManager : MonoBehaviour
     public string worldId;
     public GameObject HubPrefab;
     private Dictionary<string, GameObject> worldObjects;
-    private event Action worldStartedLoading;
-    private event Action worldFinishedLoading;
+    public event Action worldStartedLoading;
+    public event Action worldFinishedLoading;
 
     public bool isLoading = true;
 

@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     public Transform cameraPivot;
     public GameObject fishingRod;
+    public GameObject cam;
 
     private Rigidbody rb;
     private bool canMove;
@@ -36,6 +37,14 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
     }
 
+    void resetPosition()
+    {
+        gameObject.transform.position = Vector3.zero + new Vector3(0, 10, 0);
+        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.linearVelocity = Vector3.zero;
+    }
+
     void OnSceneChanged(Scene oldScene, Scene newScene)
     {
 
@@ -46,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentScene == "Avatar")
         {
+            cam.SetActive(false);
             isLooking = false;
             objController.enabled = false;
             playerSync.enabled = false;
@@ -53,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (currentScene == "MainMenu")
         {
+            cam.SetActive(false);
             isLooking = false;
             objController.enabled = false;
             playerSync.enabled = false;
@@ -60,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (currentScene == "LoginPage")
         {
+            cam.SetActive(false);
             isLooking = false;
             objController.enabled = false;
             playerSync.enabled = false;
@@ -67,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            WorldManager.Instance.worldFinishedLoading += resetPosition;
+            cam.SetActive(true);
             isLooking = true;
             objController.enabled = true;
             playerSync.enabled = true;

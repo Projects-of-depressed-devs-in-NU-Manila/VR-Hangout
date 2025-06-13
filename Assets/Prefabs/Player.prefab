@@ -311,6 +311,7 @@ MonoBehaviour:
   jumpForce: 5
   cameraPivot: {fileID: 216028510046982655}
   fishingRod: {fileID: 0}
+  cam: {fileID: 1630667787198352155}
   fishGame: {fileID: 4603665157105288178, guid: eabf701b52498f240a9314b01698c898, type: 3}
   character: {fileID: 994869556845561060}
 --- !u!114 &3111154146082006799
@@ -492,7 +493,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5999999, z: 0.09999999}
-  m_LocalScale: {x: 1.4563105, y: 1.4563105, z: 1.4563105}
+  m_LocalScale: {x: 1.4563103, y: 1.4563103, z: 1.4563103}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 216028510046982655}

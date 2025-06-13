@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menus/LoginPage.unity
     guid: 90339ea4c22bd6e4aaba3ecea87608a9
+  - enabled: 1
+    path: Assets/Scenes/Experimental/PlacingObjectsTest.unity
+    guid: abad72879c214614a839ac2f81ff526c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
