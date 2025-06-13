@@ -1,5 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -17,11 +17,32 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 input;
     private bool isFishing = false;
     [SerializeField] private GameObject fishGame;
+    [SerializeField] private GameObject character;
     private bool insideFishingRegion;
     private Animator animator;
+    private string currentScene;
+    
 
     void Start()
     {
+        currentScene = SceneManager.GetActiveScene().name;
+        ObjectPlacingController objController = character.GetComponent<ObjectPlacingController>();
+        PlayerTransformSyncer playerSync = character.GetComponent<PlayerTransformSyncer>();
+        InventoryManager inventory = character.GetComponent<InventoryManager>();
+
+        if (currentScene != "Avatar")
+        {
+            objController.enabled = true;
+            playerSync.enabled = true;
+            inventory.enabled = true;
+        }
+        else
+        {
+            objController.enabled = false;
+            playerSync.enabled = false;
+            inventory.enabled = false;
+        }
+
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
 
@@ -32,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (!isFishing) { canMove = true; }
+        if (!isFishing && currentScene != "Avatar") { canMove = true; }
         if (canMove)
         {
             Cursor.lockState = CursorLockMode.Locked;
