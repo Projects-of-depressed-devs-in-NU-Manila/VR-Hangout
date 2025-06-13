@@ -49,8 +49,9 @@ public class MultiplayerMovementManager : MonoBehaviour
     }
 
     void OnPlayerDisconnect(DisconnectionMessage message){
-        Destroy(players[message.playerId], 1f);
+        Destroy(players[message.playerId]);
         players.Remove(message.playerId);
+        animators.Remove(message.playerId);
         onPlayerDespawn(message.playerId);
     }
 

@@ -33,7 +33,7 @@ public class PlayerAnimationSyncer : MonoBehaviour
             animation.isRunning = isRunning;
             animation.isFishing = isFishing;
 
-            NetworkManager.Instance.Broadcast(JsonHelper.ToJson(animation));
+            NetworkManager.Instance?.Broadcast(JsonHelper.ToJson(animation));
 
 
             lastIsWalking = isWalking;

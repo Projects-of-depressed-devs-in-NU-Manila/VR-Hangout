@@ -1855,6 +1855,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bartender
       objectReference: {fileID: 0}
+    - target: {fileID: 7555455857582554621, guid: 68cf30ca8e3c67e428f2a5ee2e56b495, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8400576925329142645, guid: 68cf30ca8e3c67e428f2a5ee2e56b495, type: 3}
       propertyPath: m_RootBone
       value: 
