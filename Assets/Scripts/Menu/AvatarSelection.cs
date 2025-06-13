@@ -44,6 +44,7 @@ public class AvatarSelection : MonoBehaviour
         characters[index].SetActive(true);
         currentIndex = index;   
         characterName = characters[index].name;
+        PlayerContext.Instance.playerCharacter = characterName;
     }
 
     public string getCharacterName()
