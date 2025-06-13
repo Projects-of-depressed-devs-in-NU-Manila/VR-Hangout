@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 2308629210853445100}
   - component: {fileID: 3147072293101514983}
   - component: {fileID: 2933912914212225551}
+  - component: {fileID: 4731563276108129766}
   - component: {fileID: 8341713313721213831}
   - component: {fileID: 1155416100092000678}
   - component: {fileID: 3111154146082006799}
@@ -279,6 +280,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e05773a11a2ce744b0a9bd11d17144d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4731563276108129766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994869556845561060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 572cd1b7779f53b40ababc5c2a15c2fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isWalking: 0
+  isRunning: 0
+  isFishing: 0
+  lastIsWalking: 0
+  lastIsRunning: 0
+  lastIsFishing: 0
 --- !u!114 &8341713313721213831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,6 +333,7 @@ MonoBehaviour:
   cam: {fileID: 1630667787198352155}
   fishGame: {fileID: 4603665157105288178, guid: eabf701b52498f240a9314b01698c898, type: 3}
   character: {fileID: 994869556845561060}
+  animationSyncer: {fileID: 0}
 --- !u!114 &3111154146082006799
 MonoBehaviour:
   m_ObjectHideFlags: 0

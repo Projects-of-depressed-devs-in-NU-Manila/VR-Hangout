@@ -6,7 +6,6 @@ public class PlayerAnimationSyncer : MonoBehaviour
     private float sendInterval = 1f / 10;
     private float sendTimer = 0;
 
-    private float positionThreshold = 0.1f;
     public bool isWalking;
     public bool isRunning;
     public bool isFishing;

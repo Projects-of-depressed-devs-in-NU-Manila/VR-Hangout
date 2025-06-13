@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isFishing = false;
     [SerializeField] private GameObject fishGame;
     [SerializeField] private GameObject character;
+    public PlayerAnimationSyncer animationSyncer;
     private bool insideFishingRegion;
     private Animator animator;
     private string currentScene;
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        animationSyncer = gameObject.GetComponent<PlayerAnimationSyncer>();
         SceneManager.activeSceneChanged += OnSceneChanged;
         OnSceneChanged(new Scene(), new Scene());
         rb = GetComponent<Rigidbody>();
@@ -131,6 +133,8 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetBool("isWalking", isMoving);
         animator.SetBool("isRunning", isRunning);
+        animationSyncer.isWalking = isMoving;
+        animationSyncer.isRunning = isRunning;
     }
 
     private void HandleFishing()
@@ -199,6 +203,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isFishing = fishing;
         animator.SetBool("isFishing", fishing);
+        animationSyncer.isFishing = fishing;
 
         if (fishGame == null)
         {
