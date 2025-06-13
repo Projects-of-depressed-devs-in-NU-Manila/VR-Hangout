@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Login : MonoBehaviour
@@ -46,6 +47,8 @@ public class Login : MonoBehaviour
             AuthResponse response = JsonHelper.FromJson<AuthResponse>(request.downloadHandler.text);
             PlayerContext.Instance.playerId = response.player_id;
             PlayerContext.Instance.playerName = response.username;
+
+            SceneManager.LoadScene("MainMenu");
         }
     }
 

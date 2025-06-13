@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -21,34 +22,56 @@ public class PlayerMovement : MonoBehaviour
     private bool insideFishingRegion;
     private Animator animator;
     private string currentScene;
+
+    private bool isLooking = false;
     
 
     void Start()
     {
+        SceneManager.activeSceneChanged += OnSceneChanged;
+        OnSceneChanged(new Scene(), new Scene());
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
+
+        rb.freezeRotation = true;
+    }
+
+    void OnSceneChanged(Scene oldScene, Scene newScene)
+    {
+
         currentScene = SceneManager.GetActiveScene().name;
         ObjectPlacingController objController = character.GetComponent<ObjectPlacingController>();
         PlayerTransformSyncer playerSync = character.GetComponent<PlayerTransformSyncer>();
         InventoryManager inventory = character.GetComponent<InventoryManager>();
 
-        if (currentScene != "Avatar")
+        if (currentScene == "Avatar")
         {
-            objController.enabled = true;
-            playerSync.enabled = true;
-            inventory.enabled = true;
-        }
-        else
-        {
+            isLooking = false;
             objController.enabled = false;
             playerSync.enabled = false;
             inventory.enabled = false;
         }
-
-        rb = GetComponent<Rigidbody>();
-        animator = GetComponentInChildren<Animator>();
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        rb.freezeRotation = true;
+        else if (currentScene == "MainMenu")
+        {
+            isLooking = false;
+            objController.enabled = false;
+            playerSync.enabled = false;
+            inventory.enabled = false;
+        }
+        else if (currentScene == "LoginPage")
+        {
+            isLooking = false;
+            objController.enabled = false;
+            playerSync.enabled = false;
+            inventory.enabled = false;
+        }
+        else
+        {
+            isLooking = true;
+            objController.enabled = true;
+            playerSync.enabled = true;
+            inventory.enabled = true;
+        }
     }
 
     void Update()
@@ -56,9 +79,6 @@ public class PlayerMovement : MonoBehaviour
         if (!isFishing && currentScene != "Avatar") { canMove = true; }
         if (canMove)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
             HandleLook();
             HandleInput();
             HandleJump();
@@ -66,14 +86,15 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
         HandleFishing();
     }
 
     private void HandleLook()
     {
+        if (!isLooking)
+            return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
@@ -184,14 +205,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (fishing)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
             fishingRod.SetActive(true);
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
             fishingRod.SetActive(false);
         }
     }

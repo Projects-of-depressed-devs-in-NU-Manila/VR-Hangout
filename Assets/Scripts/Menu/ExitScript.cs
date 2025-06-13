@@ -19,6 +19,7 @@ public class ExitScript : MonoBehaviour
 
     public void ToAvatar()
     {
+        GameObject player = GameObject.Find("Player");
         SceneManager.LoadScene("Avatar");
     }
 

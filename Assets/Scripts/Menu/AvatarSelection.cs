@@ -14,6 +14,13 @@ public class AvatarSelection : MonoBehaviour
 
     void Start()
     {
+        GameObject player = GameObject.Find("Player");
+
+        foreach (Transform avatar in player.transform.GetChild(2).transform)
+        {
+            characters.Add(avatar.gameObject);
+        }        
+
         for (int i = 0; i < characters.Count; i++)
         {
             int index = i;

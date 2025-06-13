@@ -15,6 +15,6 @@ public class EnterWorldButton : MonoBehaviour
                 enabledProperty.SetValue(component, true);
             }
         }
-        SceneManager.LoadScene("PlacingObjectTest");
+        SceneManager.LoadScene("PlacingObjectsTest");
     }
 }
