@@ -12,6 +12,7 @@ public class MultiplayerMovementManager : MonoBehaviour
     public static MultiplayerMovementManager Instance;
 
     private Dictionary<string, GameObject> players;
+    private Dictionary<string, Animator> animators;
 
     public event Action<string, GameObject> onPlayerSpawn;
     public event Action<string> onPlayerDespawn;
@@ -31,15 +32,20 @@ public class MultiplayerMovementManager : MonoBehaviour
     void Start()
     {
         players = new Dictionary<string, GameObject>();
+        animators = new Dictionary<string, Animator>();
 
         NetworkManager.Instance.onOtherPlayerConnect += OnPlayerConnect;
         NetworkManager.Instance.onOtherPlayerDisconnect += OnPlayerDisconnect;
         NetworkManager.Instance.onOtherPlayerMove += OnPlayerMove;
+        NetworkManager.Instance.OnAnimationSync += OnPlayerAnimationSync;
     }
 
     void OnPlayerConnect(ConnectionMessage message){
         GameObject player = Instantiate(characterPrefab, transform);
+        GameObject character_avatar = CharacterUtils.LoadPrefab(message.avatar_name);
+        GameObject avatar = Instantiate(character_avatar, player.transform);
         players.Add(message.playerId, player);
+        animators.Add(message.playerId, player.GetComponent<Animator>());
         onPlayerSpawn(message.playerId, player);
     }
 
@@ -52,6 +58,14 @@ public class MultiplayerMovementManager : MonoBehaviour
     void OnPlayerMove(PlayerMoveMessage message){
         players[message.playerId].transform.position = message.position;
         players[message.playerId].transform.rotation = Quaternion.Euler(message.rotation);
+    }
+
+    void OnPlayerAnimationSync(PlayerAnimation animation)
+    {
+        Animator animator = animators[animation.player_id];
+        animator.SetBool("isWalking", animation.isWalking);
+        animator.SetBool("isRunning", animation.isRunning);
+        animator.SetBool("isFishing", animation.isFishing);
 
     }
 

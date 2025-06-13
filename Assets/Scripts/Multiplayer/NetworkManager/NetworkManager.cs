@@ -17,6 +17,7 @@ public class NetworkManager : MonoBehaviour
     public event Action<WorldData> onWorldObjectAdded;
     public event Action<WorldData> onWorldObjectEditted;
     public event Action<Chat> OnChatRecieved;
+    public event Action<PlayerAnimation> OnAnimationSync;
     public event Action onGoToHub;
     public event Action onConnect;
 
@@ -78,6 +79,9 @@ public class NetworkManager : MonoBehaviour
                     break;
                 case "chat":
                     OnChatRecieved?.Invoke(JsonHelper.FromJson<Chat>(dataStr));
+                    break;
+                case "animationSync":
+                    OnAnimationSync?.Invoke(JsonHelper.FromJson<PlayerAnimation>(dataStr));
                     break;
 
             }
