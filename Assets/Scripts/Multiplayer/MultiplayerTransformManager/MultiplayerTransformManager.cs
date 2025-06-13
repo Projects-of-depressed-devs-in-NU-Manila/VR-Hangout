@@ -41,7 +41,7 @@ public class MultiplayerMovementManager : MonoBehaviour
 
     void OnPlayerConnect(ConnectionMessage message){
         GameObject player = Instantiate(characterPrefab, transform);
-        player.transform.GetChild(1).Find(message.avatar_name);
+        player.transform.GetChild(1).Find(message.avatar_name).gameObject.SetActive(true);
         players.Add(message.playerId, player);
         animators.Add(message.playerId, player.GetComponent<Animator>());
         onPlayerSpawn(message.playerId, player);
