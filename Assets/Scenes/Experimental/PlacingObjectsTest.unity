@@ -1133,67 +1133,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334040905}
   m_CullTransparentMesh: 1
---- !u!1001 &336464122
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 734088660}
-    m_Modifications:
-    - target: {fileID: 623658291521584025, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1790619511}
-    - target: {fileID: 4603665157105288178, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_Name
-      value: FishingMinigame
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 605.78
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 234.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 44.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eabf701b52498f240a9314b01698c898, type: 3}
 --- !u!4 &343370438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 216028510046982655, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
@@ -2795,11 +2734,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649624052}
   m_CullTransparentMesh: 1
---- !u!1 &696870994 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5775100645764336372, guid: eabf701b52498f240a9314b01698c898, type: 3}
-  m_PrefabInstance: {fileID: 336464122}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &718794882
 GameObject:
   m_ObjectHideFlags: 0
@@ -3170,9 +3104,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4175843506740567}
-  - {fileID: 956907871}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &749748716
@@ -3762,11 +3694,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe57a2bb2354d274e8b0b68219f6083e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &956907871 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5603659322168704387, guid: eabf701b52498f240a9314b01698c898, type: 3}
-  m_PrefabInstance: {fileID: 336464122}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &968522902
 GameObject:
   m_ObjectHideFlags: 0
@@ -7768,17 +7695,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787063673}
   m_CullTransparentMesh: 1
---- !u!114 &1790619511 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1155416100092000678, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
-  m_PrefabInstance: {fileID: 3892239873468908248}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e28caf05f53a844861301ee481e948, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1824640224
 GameObject:
   m_ObjectHideFlags: 0
@@ -8987,11 +8903,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2125976974}
   m_CullTransparentMesh: 1
---- !u!4 &4175843506740567 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6030046712728428582, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
-  m_PrefabInstance: {fileID: 3892239873468908248}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4254673004682575 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3087559006508202202, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
@@ -9105,7 +9016,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 734088660}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 216028510046982655, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9159,10 +9070,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 994869556845561060, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1155416100092000678, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
       propertyPath: fishGame
       value: 
-      objectReference: {fileID: 696870994}
+      objectReference: {fileID: 0}
     - target: {fileID: 1155416100092000678, guid: 8bf317a635ca2604f9aa7c545c898db2, type: 3}
       propertyPath: jumpForce
       value: 3
@@ -9249,4 +9164,5 @@ SceneRoots:
   - {fileID: 913700374}
   - {fileID: 523816768}
   - {fileID: 1559570111}
+  - {fileID: 3892239873468908248}
   - {fileID: 734088660}
