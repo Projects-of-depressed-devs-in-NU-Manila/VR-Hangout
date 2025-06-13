@@ -34,7 +34,7 @@ public class NetworkManager : MonoBehaviour
     async void Start()
     {
         ws = new WebsocketClient();
-        await ws.Connect($"ws://vrhangout.cottonbuds.dev/game/ws?player_id={PlayerContext.Instance.playerId}"); // underscore just means run in the background without awaiting it
+        await ws.Connect($"ws://vrhangout.cottonbuds.dev/game/ws?player_id={PlayerContext.Instance.playerId}&avatar_name={PlayerContext.Instance.playerCharacter}"); // underscore just means run in the background without awaiting it
         ws.addRecievedCallback(OnDataRecieved);
         onConnect?.Invoke();
     }
