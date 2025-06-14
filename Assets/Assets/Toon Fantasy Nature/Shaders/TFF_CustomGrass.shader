@@ -200,6 +200,14 @@ Shader "Toon/TFF_CustomGrass"
 			#define ASE_NEEDS_FRAG_WORLD_POSITION
 			#define ASE_NEEDS_FRAG_SHADOWCOORDS
 			#define ASE_NEEDS_VERT_NORMAL
+			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+			#pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+			#pragma multi_compile _ _SHADOWS_SOFT
+			#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
+			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+			#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+			#pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
 
 
 			struct VertexInput
@@ -1055,10 +1063,12 @@ Shader "Toon/TFF_CustomGrass"
 			#define ASE_NEEDS_FRAG_WORLD_POSITION
 			#define ASE_NEEDS_FRAG_SHADOWCOORDS
 			#define ASE_NEEDS_VERT_NORMAL
-			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS  _MAIN_LIGHT_SHADOWS_SCREEN
+			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
 			#pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
 			#pragma multi_compile _ _SHADOWS_SOFT
 			#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
+			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
 			#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
 			#pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
 

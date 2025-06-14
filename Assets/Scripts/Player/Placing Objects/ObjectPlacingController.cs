@@ -46,6 +46,8 @@ public class ObjectPlacingController : MonoBehaviour
                 }
 
                 GameObject equippedItem = WorldObjectUtils.LoadPrefab(currentInventoryItem.object_id);
+                WorldObjectComponent component = equippedItem.AddComponent<WorldObjectComponent>();
+                component.objectId = currentInventoryItem.object_id;
                 setPreviewObject(Instantiate(equippedItem));
                 setState(State.Placing);
                 LayerMaskUtils.SetLayerRecursively(previewObject, LayerMask.NameToLayer("PendingWorldObject"));
